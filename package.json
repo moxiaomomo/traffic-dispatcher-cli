@@ -58,6 +58,7 @@
     "flyio": "^0.6.2",
     "regenerator-runtime": "^0.12.1",
     "rxjs": "^6.6.2",
+    "uni-simple-router": "^1.5.5",
     "vue": "^2.6.11",
     "vue-baidu-map": "^0.21.22",
     "vue-class-component": "^6.3.2",

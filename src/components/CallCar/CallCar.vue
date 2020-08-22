@@ -37,11 +37,5 @@ export default class CallCar extends Vue {
     onCancel() {
         this.$emit('show');
     }
-
-    init () {
-        this.$nextTick(() => {
-            this.contentHeight = this.$el.scrollHeight;
-        });
-    }
 }
 </script>
