@@ -1,0 +1,82 @@
+.content {
+    // background: #377EB4;
+    background: rgba(17, 44, 119, 0.85);
+    width: 100vw;
+    height: 100vh;
+}
+.avatorWrapper{
+    height: 30vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.avator{
+    width: 200upx;
+    height: 200upx;
+    overflow: hidden;
+}
+.avator .img{
+    width: 100%
+}
+.titleWrapper{
+    height: 30vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.title{
+    width: 300upx;
+    height: 200upx;
+    overflow: hidden;
+    // color: #77B307;
+    color: #fcfcfc;
+}
+.form{
+    padding: 0 100upx;
+    margin-top: 40px;
+}
+.inputWrapper{
+    width: 100%;
+    height: 80upx;
+    background: white;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 0 20px;
+    margin-top: 25px;
+}
+.inputWrapper .input{
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    font-size: 15px;
+}
+.roleWrapper {
+    margin-top: 10px;
+    color: #fcfcfc;
+    text-align: center;
+}
+.roleWrapper .radiocus{
+    margin: 0 10px;
+}
+.signinBtn{
+    width: 100%;
+    height: 80upx;
+    background: #77B307;
+    border-radius: 5upx;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.signinBtn .btnValue{
+    color: white;
+}
+.forgotBtn{
+    text-align: center;
+    color: #EAF6F9;
+    font-size: 15px;
+    margin-top: 20px;
+}

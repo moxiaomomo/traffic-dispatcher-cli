@@ -1,7 +1,12 @@
 {
     "pages": [
         {
-            "path": "pages/login/index",
+            "path": "pages/signup/index",
+            "style": {
+            }
+        },
+        {
+            "path": "pages/signin/index",
             "style": {
             }
         },

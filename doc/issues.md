@@ -3,3 +3,18 @@
 ```
 openActionSheet 命名有冲突， 换个其他变量名解决。
 ```
+
+- core-js
+
+```
+These dependencies were not found:
+
+* core-js/modules/es.array-buffer.constructor in ./node_modules/@dcloudio/uni-h5/dist/index.umd.min.js
+* core-js/modules/es.array-buffer.slice in ./node_modules/@dcloudio/uni-h5/dist/index.umd.min.js
+* core-js/modules/es.array.concat in ./node_modules/@dcloudio/uni-h5/dist/index.umd.min.js
+// ...
+
+// core-js/library/fn/object/assign in ./node_modules/babel-runtime/core-js/object/assign.js
+
+// 重装core-js@3.6.5后恢复正常 (和element-ui有冲突)
+```
