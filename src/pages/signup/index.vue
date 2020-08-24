@@ -8,7 +8,6 @@
     <view class="titleWrapper">
       <view class="title">
         <span>打车 App (Alpha)</span>
-        <!-- <image class="img" src="../../static/WX20200627-161205.png" mode="widthFix"></image> -->
       </view>
     </view>
     <view class="form">
@@ -64,7 +63,10 @@ export default class SignupPage extends Vue {
     uni.getStorage({
       key: 'user',
       success: (res) => {
-        console.log(res)
+        // 判断token是否有效
+        if (res.data && res.data.token && res.data.token.length == 40) {
+          uni.switchTab({ url: '/pages/home/index' })
+        }
       },
     })
   }

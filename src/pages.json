@@ -11,7 +11,19 @@
     {
       "path": "pages/home/index",
       "style": {
-        "navigationBarTitleText": "出行App"
+        "navigationBarTitleText": "首页"
+      }
+    },
+    {
+      "path": "pages/my/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/history/index",
+      "style": {
+        "navigationBarTitleText": "出行历史"
       }
     }
   ],

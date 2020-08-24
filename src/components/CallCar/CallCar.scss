@@ -9,7 +9,7 @@
   width: 100%;
   padding: 8px;
   z-index: 10;
-  font-size: 13px;
+  font-size: 14px;
 
   -webkit-transition-duration: 300ms;
   -moz-transition-duration: 300ms;
@@ -18,7 +18,12 @@
   transition-duration: 300ms;
 
   .actionsheet {
-    background-color: rgba(132, 184, 226, 0.9);
+    color: #f1f1f1;
+    background-image: linear-gradient(
+      120deg,
+      rgba(34, 159, 241, 0.9),
+      rgba(104, 160, 206, 0.9)
+    );
     border-radius: 10px;
     ._header {
       display: flex;
@@ -32,7 +37,7 @@
       }
 
       .clear {
-        color: #0894ec;
+        color: #f1f1f1;
       }
     }
 
@@ -52,7 +57,7 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 0 8px;
+        padding: 8px 8px;
         img {
           margin-right: 6px;
         }

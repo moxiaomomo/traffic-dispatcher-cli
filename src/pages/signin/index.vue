@@ -38,6 +38,9 @@
       <view class="signinBtn">
         <text class="btnValue" @click="onSignin">登录</text>
       </view>
+      <view class="forgotBtn">
+        <text @click="toSignup">注册新用户》》</text>
+      </view>
     </view>
   </view>
 </template>
@@ -53,6 +56,22 @@ export default class SigninPage extends Vue {
   private username = ''
   private password = ''
   private role = 0
+
+  public mounted(): void {
+    uni.getStorage({
+      key: 'user',
+      success: (res) => {
+        // 判断token是否有效
+        if (res.data && res.data.token && res.data.token.length == 40) {
+          uni.switchTab({ url: '/pages/home/index' })
+        }
+      },
+    })
+  }
+
+  toSignup() {
+    uni.navigateTo({ url: '/pages/signup/index' })
+  }
 
   async onSignin() {
     if (this.username.length < 3 || this.password.length < 5) {
@@ -70,13 +89,16 @@ export default class SigninPage extends Vue {
     const res: any = await ApiService.post(`/passenger/user/signin`, data)
     if (res.data && res.data.code == 1) {
       // 保存登录信息
-      uni.setStorage({
-        key: 'user',
-        data: res.data.user,
-        success() {
-          uni.navigateTo({ url: '/pages/home/index' })
-        },
-      })
+      try {
+        uni.setStorageSync('user', res.data.user)
+        uni.switchTab({ url: '/pages/home/index' })
+      } catch (e) {
+        // error
+        uni.showToast({
+          title: '无法存储登录信息',
+          duration: 2000,
+        })
+      }
     } else {
       uni.showToast({
         title: '用户名或密码不正确',
