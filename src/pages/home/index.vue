@@ -1,18 +1,18 @@
 <template>
   <div class="home-container">
     <LBSStat style="width:100%;height:100%;" :locs="locs" />
-    <CallCar :open="asOpen" v-on:show="onCallCarEvt($event)"/>
+    <CallCar :open="asOpen" v-on:show="onCallCarEvt($event)" />
   </div>
 </template>
 
 <script lang="ts">
 // @ is an alias to /src
-import LBSStat from "@/components/LBSStat/LBSStat.vue";
-import  CallCar  from "@/components/CallCar/CallCar.vue";
+import LBSStat from '@/components/LBSStat/LBSStat.vue'
+import CallCar from '@/components/CallCar/CallCar.vue'
 
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { WSService } from "@/service/ws.service";
-import { GeoLocation } from "@/components/LBSStat/LBSStat.vue";
+import { Component, Vue, Prop } from 'vue-property-decorator'
+import { WSService } from '@/service/ws.service'
+import { GeoLocation } from '@/components/LBSStat/LBSStat.vue'
 
 @Component({
   components: {
@@ -21,9 +21,9 @@ import { GeoLocation } from "@/components/LBSStat/LBSStat.vue";
   },
 })
 export default class Home extends Vue {
-  private locs: GeoLocation[] = [];
-  private sidPrefix = "lbsclient_";
-  private asOpen: boolean = true;
+  private locs: GeoLocation[] = []
+  private sidPrefix = 'lbsclient_'
+  private asOpen: boolean = true
 
   public mounted(): void {
     // WSService.initiate();
@@ -46,16 +46,16 @@ export default class Home extends Vue {
     // }, 5000);
   }
 
-  onCallCarEvt(evt:any) {
-    this.asOpen = !this.asOpen;
-    console.log(this.asOpen);
+  onCallCarEvt(evt: any) {
+    this.asOpen = !this.asOpen
+    console.log(this.asOpen)
   }
 }
 </script>
 
 <style scoped>
 .home-container {
-  padding: 32px;
+  padding: 0px 0px 40px 0px;
   height: 100%;
   background-color: rgb(240, 242, 245, 0.8);
   position: relative;

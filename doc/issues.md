@@ -18,3 +18,12 @@ These dependencies were not found:
 
 // 重装core-js@3.6.5后恢复正常 (和element-ui有冲突)
 ```
+
+- vscode vue 格式化问题, 安装以下插件， 相关配置参考`.vscode`
+
+```
+1)ESlint
+2)vetur
+3)Prettier - Code formatter
+4)Manta’s Stylus Supremacy
+```

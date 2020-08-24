@@ -1,26 +1,50 @@
 {
-    "pages": [
-        {
-            "path": "pages/signup/index",
-            "style": {
-            }
-        },
-        {
-            "path": "pages/signin/index",
-            "style": {
-            }
-        },
-        {
-            "path": "pages/home/index",
-            "style": {
-                "navigationBarTitleText": "uni-app"
-            }
-        }
-    ],
-    "globalStyle": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "uni-app",
-        "navigationBarBackgroundColor": "#F8F8F8",
-        "backgroundColor": "#F8F8F8"
+  "pages": [
+    {
+      "path": "pages/signup/index",
+      "style": {}
+    },
+    {
+      "path": "pages/signin/index",
+      "style": {}
+    },
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "出行App"
+      }
     }
+  ],
+  "tabBar": {
+    "color": "#333",
+    "selectedColor": "deepskyblue",
+    "backgroundColor": "#eee",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/history/index",
+        "text": "历史",
+        "iconPath": "static/tabbar/history.png",
+        "selectedIconPath": "static/tabbar/history-selected.png"
+      },
+      {
+        "pagePath": "pages/home/index",
+        "text": "出行",
+        "iconPath": "./static/tabbar/car.png",
+        "selectedIconPath": "static/tabbar/car-selected.png"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/my.png",
+        "selectedIconPath": "static/tabbar/my-selected.png"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  }
 }
