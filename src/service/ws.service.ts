@@ -1,4 +1,4 @@
-import { interval, Subject, Subscription } from 'rxjs';
+import {interval, Subject, Subscription} from 'rxjs';
 
 export class WSService {
   public static msgSubject: Subject<string>;
@@ -13,7 +13,8 @@ export class WSService {
 
   // private static wsURL = "ws://192.168.200.174:8080/ws/AGV/";
   private static wsProtocal = 'lbs';
-  private static wsURL = 'ws://testsvc.keke.com:8082/ws/lbs';
+  private static wsURL = 'ws://192.168.2.244:8082/geo/ws/lbs';
+  private static role = '0';
 
   public static initiate() {
     WSService.msgSubject = new Subject<string>();
@@ -35,16 +36,15 @@ export class WSService {
     }, 1000);
   }
 
-  public static connect(sid: string) {
+  public static connect(sid: string, role: string) {
     if (WSService.websocket && WSService.websocket.readyState == 1) {
       return;
     }
     WSService.sid = sid;
-    // WSService.websocket = new WebSocket(WSService.wsURL, WSService.wsProtocal);
+    // WSService.websocket = new WebSocket(WSService.wsURL,
+    // WSService.wsProtocal);
     WSService.websocket = new WebSocket(
-      `${WSService.wsURL}?sid=${sid}`,
-      WSService.wsProtocal
-    );
+        `${WSService.wsURL}?sid=${sid}&role=${role}`, WSService.wsProtocal);
     WSService.websocket.onopen = (e) => WSService.onOpen(e);
     WSService.websocket.onmessage = (e) => WSService.onMessage(e);
     WSService.websocket.onclose = (e) => WSService.onClose(e);
@@ -97,11 +97,10 @@ export class WSService {
       return;
     }
     WSService.reconnecting = true;
-    WSService.reconnectSubscribe = interval(WSService.retryPeriod).subscribe(
-      async (val) => {
-        WSService.connect(WSService.sid);
-      }
-    );
+    WSService.reconnectSubscribe =
+        interval(WSService.retryPeriod).subscribe(async (val) => {
+          WSService.connect(WSService.sid, WSService.role);
+        });
   }
 
   public static stopReconnect() {
