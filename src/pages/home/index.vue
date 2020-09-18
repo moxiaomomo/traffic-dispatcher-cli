@@ -43,12 +43,22 @@ export default class Home extends Vue {
       this.locs = [];
       for (const ele of data) {
         const geo = ele.geoinfo.coordinates;
+        console.log(geo);
         if (geo instanceof Array && geo.length == 2) {
           this.locs.push({ lng: geo[0], lat: geo[1] });
         }
       }
     });
     setInterval(() => {
+      WSService.sendMessage(
+        JSON.stringify({
+          cmd: 3,
+          role: 0,
+          qrole: 1,
+          geo: { lng: 116.404, lat: 39.915 },
+          qgeo: { lng: 116.404, lat: 39.915 },
+        })
+      );
       WSService.sendMessage(JSON.stringify({ lng: 116.404, lat: 39.915 }));
     }, 5000);
   }
