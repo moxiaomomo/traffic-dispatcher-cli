@@ -1,13 +1,6 @@
 <template>
   <div class="home-container">
-    <LBSStat
-      style="width:100%;height:100%;"
-      :locs="locs"
-    />
-    <CallCar
-      :open="asOpen"
-      v-on:show="onCallCarCmpEvt($event)"
-    />
+    <p>等待订单中</p>
   </div>
 </template>
 
@@ -27,7 +20,7 @@ import ApiService from "@/api/api.service";
     CallCar,
   },
 })
-export default class Home extends Vue {
+export default class DriverHome extends Vue {
   private locs: GeoLocation[] = [];
   private sidPrefix = "lbsclient_";
   private asOpen: boolean = true;
@@ -65,55 +58,13 @@ export default class Home extends Vue {
   }
 
   onLoad() {
-    const role = uni.getStorageSync("userRole");
-    if (role == 1) {
-      uni.navigateTo({ url: "/pages/driver-home/index" });
-      return;
-    }
     // on callcar
-    uni.$on("callcar", (res) => {
-      this.onCallCar(res);
-    });
   }
 
   onUnload() {
     uni.$off("callcar", () => {
       console.log("unsubscribe callcar event");
     });
-  }
-
-  async onCallCar(req: any) {
-    const user = uni.getStorageSync("user");
-    const data = {
-      srcGeo: req.srcGeo,
-      destGeo: req.destGeo,
-      passengerId: user.userID,
-    };
-    const res: any = await ApiService.post(
-      `/passenger/order/createOrder`,
-      data
-    );
-    if (res.data && res.data.code == 10000) {
-      uni.showToast({
-        title: "已发起呼叫，请等待司机接单",
-        duration: 2000,
-      });
-    } else if (res.data && res.data.code == 10007) {
-      uni.showToast({
-        title: "当前还有一条进行中的订单哦",
-        duration: 2000,
-      });
-    } else {
-      uni.showToast({
-        title: "叫车失败，请稍后重试",
-        duration: 2000,
-      });
-    }
-  }
-
-  onCallCarCmpEvt(evt: any) {
-    this.asOpen = !this.asOpen;
-    // console.log(this.asOpen);
   }
 }
 </script>

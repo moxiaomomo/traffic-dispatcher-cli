@@ -15,6 +15,12 @@
       }
     },
     {
+      "path": "pages/driver-home/index",
+      "style": {
+        "navigationBarTitleText": "首页"
+      }
+    },
+    {
       "path": "pages/my/index",
       "style": {
         "navigationBarTitleText": "我的"
