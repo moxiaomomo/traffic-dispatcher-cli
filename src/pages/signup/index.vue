@@ -29,14 +29,22 @@
       </view>
       <view class="roleWrapper">
         <radio-group @change="roleChange">
-          <label class="radio radiocus"><radio value="1" />司机</label>
-          <label class="radio radiocus"
-            ><radio value="0" checked="true" />乘客</label
-          >
+          <label class="radio radiocus">
+            <radio value="1" />司机
+          </label>
+          <label class="radio radiocus">
+            <radio
+              value="0"
+              checked="true"
+            />乘客
+          </label>
         </radio-group>
       </view>
       <view class="signupBtn">
-        <text class="btnValue" @click="onSignup">注册</text>
+        <text
+          class="btnValue"
+          @click="onSignup"
+        >注册</text>
       </view>
       <view class="forgotBtn">
         <text @click="toSignin">已有账号，直接登录》》</text>
@@ -46,61 +54,68 @@
 </template>
 
 <script lang="ts">
-import '@/pages/signup/index.scss'
-import { Component, Vue, Prop } from 'vue-property-decorator'
-import ApiService from '@/api/api.service'
+import "@/pages/signup/index.scss";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import ApiService from "@/api/api.service";
 
 @Component({
-  name: 'Signup',
+  name: "Signup",
 })
 export default class SignupPage extends Vue {
-  private title = 'Signup'
-  private username = ''
-  private password = ''
-  private role = 0
+  private title = "Signup";
+  private username = "";
+  private password = "";
+  private role = 0;
+  private roleStr = new Map([
+    [0, "passenger"],
+    [1, "driver"],
+  ]);
 
   public mounted(): void {
     uni.getStorage({
-      key: 'user',
+      key: "user",
       success: (res) => {
         // 判断token是否有效
         if (res.data && res.data.token && res.data.token.length == 40) {
-          uni.switchTab({ url: '/pages/home/index' })
+          uni.switchTab({ url: "/pages/home/index" });
         }
       },
-    })
+    });
   }
 
   async onSignup() {
     if (this.username.length < 3 || this.password.length < 5) {
       uni.showToast({
-        title: '用户名或密码无效',
+        title: "用户名或密码无效",
         duration: 2000,
-      })
-      return
+      });
+      return;
     }
     const data = {
       userName: this.username,
       userPwd: this.password,
       role: this.role,
-    }
-    const res: any = await ApiService.post(`/passenger/user/signup`, data)
+    };
+    const res: any = await ApiService.post(
+      `/${this.roleStr.get(this.role)}/user/signup`,
+      data
+    );
     if (res.data && res.data.code == 1) {
-      uni.navigateTo({ url: '/pages/signin/index' })
+      uni.navigateTo({ url: "/pages/signin/index" });
     } else {
       uni.showToast({
-        title: '注册失败，请稍后重试',
+        title: "注册失败，请稍后重试",
         duration: 2000,
-      })
+      });
     }
   }
 
   toSignin() {
-    uni.navigateTo({ url: '/pages/signin/index' })
+    uni.navigateTo({ url: "/pages/signin/index" });
   }
 
   roleChange(evt: any) {
-    this.role = parseInt(evt.detail.value)
+    this.role = parseInt(evt.detail.value);
   }
 }
 </script>

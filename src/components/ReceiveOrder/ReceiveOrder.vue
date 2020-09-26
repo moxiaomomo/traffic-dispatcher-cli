@@ -30,7 +30,7 @@ import "@/components/CallCar/CallCar.scss";
 @Component
 export default class ReceiveOrder extends Vue {
   @Prop() open!: boolean;
-  private minHeight: number = 45;
+  private minHeight: number = 10;
   private contentHeight: number = 200;
   private srcPosition: string = "";
   private destPosition: string = "";

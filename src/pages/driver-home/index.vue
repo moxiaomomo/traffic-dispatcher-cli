@@ -1,13 +1,16 @@
 <template>
   <div class="home-container">
-    <p>等待订单中</p>
+    <div style="width:100%;height:100%;;">
+      <p style="width:100%;text-align:center;color:rgb(225,225,225);">等待订单中</p>
+    </div>
+    <ReceiveOrder style="width:100%;height:100%;" />
   </div>
 </template>
 
 <script lang="ts">
 // @ is an alias to /src
 import LBSStat from "@/components/LBSStat/LBSStat.vue";
-import CallCar from "@/components/CallCar/CallCar.vue";
+import ReceiveOrder from "@/components/ReceiveOrder/ReceiveOrder.vue";
 
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { WSService } from "@/service/ws.service";
@@ -17,7 +20,7 @@ import ApiService from "@/api/api.service";
 @Component({
   components: {
     LBSStat,
-    CallCar,
+    ReceiveOrder,
   },
 })
 export default class DriverHome extends Vue {
@@ -73,7 +76,7 @@ export default class DriverHome extends Vue {
 .home-container {
   padding: 0px 0px 40px 0px;
   height: 100%;
-  background-color: rgb(240, 242, 245, 0.8);
+  background-color: rgba(90, 131, 192, 0.8);
   position: relative;
 }
 </style>

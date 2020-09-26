@@ -30,12 +30,14 @@
       <view class="roleWrapper">
         <radio-group @change="roleChange">
           <label class="radio radiocus">
-            <radio value="1" />司机</label>
+            <radio value="1" />司机
+          </label>
           <label class="radio radiocus">
             <radio
               value="0"
               checked="true"
-            />乘客</label>
+            />乘客
+          </label>
         </radio-group>
       </view>
       <view class="signinBtn">
@@ -62,6 +64,10 @@ export default class SigninPage extends Vue {
   private username = "";
   private password = "";
   private role = 0;
+  private roleStr = new Map([
+    [0, "passenger"],
+    [1, "driver"],
+  ]);
 
   public mounted(): void {
     uni.getStorage({
@@ -92,7 +98,11 @@ export default class SigninPage extends Vue {
       userPwd: this.password,
       role: this.role,
     };
-    const res: any = await ApiService.post(`/passenger/user/signin`, data);
+
+    const res: any = await ApiService.post(
+      `/${this.roleStr.get(this.role)}/user/signin`,
+      data
+    );
     if (res.data && res.data.code == 1) {
       // 保存登录信息
       try {
