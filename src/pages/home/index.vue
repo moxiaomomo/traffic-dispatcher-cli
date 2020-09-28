@@ -2,7 +2,7 @@
   <div class="home-container">
 
     <div
-      id="homePage"
+      v-show="showHomePage"
       class="home-container"
     >
       <LBSStat
@@ -16,11 +16,15 @@
     </div>
 
     <div
-      id="driverHomePage"
+      v-show="showDriverHomePage"
       class="home-container"
     >
       <div style="width:100%;height:100%;">
         <p style="width:100%;text-align:center;color:rgb(225,225,225);">等待订单中</p>
+        <view>
+          <u-loading mode="circle"></u-loading>
+          <u-loading mode="flower"></u-loading>
+        </view>
       </div>
       <ReceiveOrder style="width:100%;" />
     </div>
@@ -33,6 +37,7 @@
 import LBSStat from "@/components/LBSStat/LBSStat.vue";
 import CallCar from "@/components/CallCar/CallCar.vue";
 import ReceiveOrder from "@/components/ReceiveOrder/ReceiveOrder.vue";
+import uActionSheet from "uView-ui/components/u-action-sheet/u-action-sheet.vue";
 
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { WSService } from "@/service/ws.service";
@@ -50,6 +55,8 @@ export default class Home extends Vue {
   private locs: GeoLocation[] = [];
   private sidPrefix = "lbsclient_";
   private asOpen: boolean = true;
+  private showHomePage = true;
+  private showDriverHomePage = false;
 
   public mounted(): void {
     const role = "" + uni.getStorageSync("userRole");
@@ -88,23 +95,11 @@ export default class Home extends Vue {
     if (role == 1) {
       // uni.navigateTo({ url: "/pages/driver-home/index" });
       // return;
-      const div = document.getElementById("driverHomePage");
-      if (div) {
-        div.style.visibility = "visible";
-      }
-      const div2 = document.getElementById("homePage");
-      if (div2) {
-        div2.style.visibility = "hidden";
-      }
+      this.showHomePage = false;
+      this.showDriverHomePage = true;
     } else {
-      const div = document.getElementById("driverHomePage");
-      if (div) {
-        div.style.visibility = "hidden";
-      }
-      const div2 = document.getElementById("homePage");
-      if (div2) {
-        div2.style.visibility = "visible";
-      }
+      this.showHomePage = true;
+      this.showDriverHomePage = false;
       // on callcar
       uni.$on("callcar", (res) => {
         this.onCallCar(res);

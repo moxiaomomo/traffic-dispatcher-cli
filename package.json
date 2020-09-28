@@ -61,6 +61,7 @@
     "regenerator-runtime": "^0.12.1",
     "rxjs": "^6.6.2",
     "uni-simple-router": "^1.5.5",
+    "uview-ui": "^1.7.3",
     "vue": "^2.6.11",
     "vue-baidu-map": "^0.21.22",
     "vue-class-component": "^6.3.2",
