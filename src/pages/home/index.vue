@@ -13,6 +13,12 @@
         :open="asOpen"
         v-on:show="onCallCarCmpEvt($event)"
       />
+      <cCircle
+        v-show="waitForAccept"
+        :size="60"
+        :percent="60"
+      >
+      </cCircle>
     </div>
 
     <div
@@ -33,6 +39,7 @@
 import LBSStat from "@/components/LBSStat/LBSStat.vue";
 import CallCar from "@/components/CallCar/CallCar.vue";
 import ReceiveOrder from "@/components/ReceiveOrder/ReceiveOrder.vue";
+import cCircle from "@/components/CircleProgress/CircleProgress.vue";
 
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { WSService } from "@/service/ws.service";
@@ -44,6 +51,7 @@ import ApiService from "@/api/api.service";
     LBSStat,
     CallCar,
     ReceiveOrder,
+    cCircle,
   },
 })
 export default class Home extends Vue {
@@ -52,6 +60,7 @@ export default class Home extends Vue {
   private asOpen: boolean = true;
   private showHomePage = true;
   private showDriverHomePage = false;
+  private waitForAccept = false;
 
   public mounted(): void {
     const role = "" + uni.getStorageSync("userRole");
@@ -124,6 +133,7 @@ export default class Home extends Vue {
         title: "已发起呼叫，请等待司机接单",
         duration: 2000,
       });
+      this.waitForAccept = true;
     } else if (res.data && res.data.code == 10007) {
       uni.showToast({
         title: "当前还有一条进行中的订单哦",
