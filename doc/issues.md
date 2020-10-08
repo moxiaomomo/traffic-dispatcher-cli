@@ -27,3 +27,9 @@ These dependencies were not found:
 3)Prettier - Code formatter
 4)Manta’s Stylus Supremacy
 ```
+
+- chunk-vendors.js:49854 GET http://localhost/sockjs-node/info?t=1602146951108 net::ERR_CONNECTION_REFUSED
+
+```
+https://www.cnblogs.com/sichaoyun/p/10178080.html
+```

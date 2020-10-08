@@ -21,10 +21,6 @@
     >
       <div style="width:100%;height:100%;">
         <p style="width:100%;text-align:center;color:rgb(225,225,225);">等待订单中</p>
-        <view>
-          <u-loading mode="circle"></u-loading>
-          <u-loading mode="flower"></u-loading>
-        </view>
       </div>
       <ReceiveOrder style="width:100%;" />
     </div>
@@ -37,7 +33,6 @@
 import LBSStat from "@/components/LBSStat/LBSStat.vue";
 import CallCar from "@/components/CallCar/CallCar.vue";
 import ReceiveOrder from "@/components/ReceiveOrder/ReceiveOrder.vue";
-import uActionSheet from "uView-ui/components/u-action-sheet/u-action-sheet.vue";
 
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { WSService } from "@/service/ws.service";
@@ -153,7 +148,7 @@ export default class Home extends Vue {
 .home-container {
   padding: 0px 0px 40px 0px;
   height: 100%;
-  background-color: rgb(240, 242, 245, 0.8);
+  background: linear-gradient(rgba(68, 115, 184, 0.8), rgb(56, 107, 184));
   position: relative;
 }
 </style>
