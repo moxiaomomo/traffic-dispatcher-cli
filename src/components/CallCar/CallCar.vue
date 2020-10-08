@@ -50,7 +50,7 @@ export default class CallCar extends Vue {
   private destPosition: string = "";
   private focusEle = "";
 
-  onLoad() {
+  public mounted(): void {
     console.log("CallCar onLoad");
     uni.$on("getloc", (res) => {
       if (this.focusEle == "src") {
