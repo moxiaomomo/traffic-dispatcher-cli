@@ -2,7 +2,20 @@
   <div
     id="hisMainContent"
     class="home-container"
-  ></div>
+  >
+    <view class="uni-list">
+      <view
+        class="uni-list-cell"
+        hover-class="uni-list-cell-hover"
+        v-for="(item,index) in hisList"
+        :key="index"
+      >
+        <view class="uni-list-cell-navigate uni-navigate-right">
+          {{item}}
+        </view>
+      </view>
+    </view>
+  </div>
 </template>
 
 <script lang="ts">
@@ -17,6 +30,7 @@ import ApiService from "@/api/api.service";
 export default class HistoryPage extends Vue {
   private sidPrefix = "lbsclient_";
   private asOpen: boolean = true;
+  private hisList = [];
 
   public mounted(): void {
     const content = document.getElementById("hisMainContent") as HTMLElement;
@@ -37,7 +51,8 @@ export default class HistoryPage extends Vue {
       data
     );
     if (res.data) {
-      console.log(res.data);
+      console.log(res.data.orders);
+      this.hisList = res.data.orders;
     }
   }
 }
