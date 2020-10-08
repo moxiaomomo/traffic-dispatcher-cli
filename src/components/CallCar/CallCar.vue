@@ -17,11 +17,13 @@
             v-model="srcPosition"
             class="item input"
             placeholder="输入起始地点"
+            @focus="onSrcFocus"
           ></input>
           <input
             v-model="destPosition"
             class="item input"
             placeholder="输入目标地点"
+            @focus="onDestFocus"
           ></input>
           <button
             class="item callBtn"
@@ -46,6 +48,14 @@ export default class CallCar extends Vue {
   private contentHeight: number = 200;
   private srcPosition: string = "";
   private destPosition: string = "";
+  private focusEle = "";
+
+  onLoad() {
+    uni.$on("getloc", (res) => {
+      if (this.onSrcFocus == "src") {
+      }
+    });
+  }
 
   @Watch("open")
   public onOpenChanged() {
@@ -73,6 +83,14 @@ export default class CallCar extends Vue {
       destGeo: "[112,30]",
     };
     uni.$emit("callcar", req);
+  }
+
+  onSrcFocus() {
+    this.focusEle = "src";
+  }
+
+  onDestFocus() {
+    this.focusEle = "dest";
   }
 }
 </script>
