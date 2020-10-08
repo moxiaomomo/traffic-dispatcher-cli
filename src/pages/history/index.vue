@@ -29,7 +29,7 @@ export default class HistoryPage extends Vue {
     const user = uni.getStorageSync("user");
     const userRole = uni.getStorageSync("userRole");
     const data = {
-      userId: user.userId,
+      userId: user.userID,
       role: userRole,
     };
     const res: any = await ApiService.post(
