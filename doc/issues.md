@@ -33,3 +33,9 @@ These dependencies were not found:
 ```
 https://www.cnblogs.com/sichaoyun/p/10178080.html
 ```
+
+- uni-app中onLoad不起作用
+
+```
+https://www.cnblogs.com/suihang/p/10998997.html
+```

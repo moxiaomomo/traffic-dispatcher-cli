@@ -113,17 +113,23 @@ export default class LBSStat extends Vue {
       this.geoc.getLocation(e.point, (rs: any) => {
         //addressComponents对象可以获取到详细的地址信息
         var addComp = rs.addressComponents;
-        var site =
-          addComp.province +
-          "," +
-          addComp.city +
-          "," +
-          addComp.district +
-          "," +
-          addComp.street +
-          "," +
-          addComp.streetNumber;
+        var site = "";
+        if (addComp.province != addComp.city) {
+          site += addComp.province + ",";
+        }
 
+        site += addComp.city;
+        if (addComp.district != "") {
+          site += "," + addComp.district;
+        }
+        if (addComp.street != "") {
+          site += "," + addComp.street;
+        }
+        if (addComp.streetNumber != "") {
+          site += "," + addComp.streetNumber;
+        }
+
+        console.log("emit event of getloc.");
         uni.$emit("getloc", { geo: e.point, addr: site });
       });
     }

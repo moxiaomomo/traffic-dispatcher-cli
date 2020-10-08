@@ -51,7 +51,7 @@ export default class CallCar extends Vue {
   private focusEle = "";
 
   public mounted(): void {
-    console.log("CallCar onLoad");
+    console.log("CallCar mounted");
     uni.$on("getloc", (res) => {
       if (this.focusEle == "src") {
         this.srcPosition = res.addr;
