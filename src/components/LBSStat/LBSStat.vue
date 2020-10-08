@@ -33,6 +33,7 @@ interface BMapData {
 export default class LBSStat extends Vue {
   @Prop() locs!: GeoLocation[];
   private bmData!: BMapData;
+  private geoc = null;
   constructor() {
     super();
     console.log("constructed.");
@@ -50,27 +51,29 @@ export default class LBSStat extends Vue {
     data.map.centerAndZoom(point, 15);
     this.bmData = data;
 
-    var geoc = new data.BMap.Geocoder();
-    data.map.addEventListener("click", (e: any) => {
-      //通过点击百度地图，可以获取到对应的point, 由point的lng、lat属性就可以获取对应的经度纬度
-      var pt = e.point;
-      geoc.getLocation(pt, (rs: any) => {
-        //addressComponents对象可以获取到详细的地址信息
-        var addComp = rs.addressComponents;
-        var site =
-          addComp.province +
-          "," +
-          addComp.city +
-          "," +
-          addComp.district +
-          "," +
-          addComp.street +
-          "," +
-          addComp.streetNumber;
+    this.geoc = new data.BMap.Geocoder();
 
-        uni.$emit("getloc", { geo: pt, addr: site });
-      });
-    });
+    // var geoc = new data.BMap.Geocoder();
+    // data.map.addEventListener("click", (e: any) => {
+    //   //通过点击百度地图，可以获取到对应的point, 由point的lng、lat属性就可以获取对应的经度纬度
+    //   var pt = e.point;
+    //   geoc.getLocation(pt, (rs: any) => {
+    //     //addressComponents对象可以获取到详细的地址信息
+    //     var addComp = rs.addressComponents;
+    //     var site =
+    //       addComp.province +
+    //       "," +
+    //       addComp.city +
+    //       "," +
+    //       addComp.district +
+    //       "," +
+    //       addComp.street +
+    //       "," +
+    //       addComp.streetNumber;
+
+    //     uni.$emit("getloc", { geo: pt, addr: site });
+    //   });
+    // });
   }
   @Watch("locs")
   public updateFlags() {
@@ -105,8 +108,25 @@ export default class LBSStat extends Vue {
     }
   }
   public getClickInfo(e: any) {
-    console.log(e.point.lng);
-    console.log(e.point.lat);
+    console.log(e.point);
+    if (this.geoc != null) {
+      this.geoc.getLocation(e.point, (rs: any) => {
+        //addressComponents对象可以获取到详细的地址信息
+        var addComp = rs.addressComponents;
+        var site =
+          addComp.province +
+          "," +
+          addComp.city +
+          "," +
+          addComp.district +
+          "," +
+          addComp.street +
+          "," +
+          addComp.streetNumber;
+
+        uni.$emit("getloc", { geo: e.point, addr: site });
+      });
+    }
   }
 }
 </script>
