@@ -19,10 +19,10 @@
         :percent="60"
       >
       </cCircle>
-      <uni-notice-bar
+      <!-- <uni-notice-bar
         single="true"
         text="[单行] 这是 NoticeBar 通告栏，这是 NoticeBar 通告栏，这是 NoticeBar 通告栏"
-      ></uni-notice-bar>
+      ></uni-notice-bar> -->
     </div>
 
     <div
