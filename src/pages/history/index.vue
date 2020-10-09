@@ -11,7 +11,7 @@
         :key="index"
       >
         <view class="uni-list-cell-navigate uni-navigate-right">
-          {{item}}
+          {{item.createAt}}|{{item.srcGeo}}|{{item.destGeo}}|{{item.status}}
         </view>
       </view>
     </view>
