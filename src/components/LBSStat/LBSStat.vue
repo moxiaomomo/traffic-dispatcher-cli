@@ -110,7 +110,7 @@ export default class LBSStat extends Vue {
   public getClickInfo(e: any) {
     console.log(e.point);
     if (this.geoc != null) {
-      this.geoc.getLocation(e.point, (rs: any) => {
+      (this.geoc as any).getLocation(e.point, (rs: any) => {
         //addressComponents对象可以获取到详细的地址信息
         var addComp = rs.addressComponents;
         var site = "";

@@ -61,6 +61,7 @@
     "regenerator-runtime": "^0.12.1",
     "rxjs": "^6.6.2",
     "uni-simple-router": "^1.5.5",
+    "uni-ui": "^1.0.0",
     "uview-ui": "^1.7.3",
     "vue": "^2.6.11",
     "vue-baidu-map": "^0.21.22",
@@ -77,6 +78,7 @@
     "@dcloudio/uni-cli-shared": "^2.0.0-28620200814003",
     "@dcloudio/uni-migration": "^2.0.0-28620200814003",
     "@dcloudio/uni-template-compiler": "^2.0.0-28620200814003",
+    "@dcloudio/uni-ui": "^1.2.5",
     "@dcloudio/vue-cli-plugin-hbuilderx": "^2.0.0-28620200814003",
     "@dcloudio/vue-cli-plugin-uni": "^2.0.0-28620200814003",
     "@dcloudio/vue-cli-plugin-uni-optimize": "^2.0.0-28620200814003",
@@ -108,5 +110,20 @@
   ],
   "uni-app": {
     "scripts": {}
-  }
+  },
+  "description": "## Project setup ``` npm install ```",
+  "main": "babel.config.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moxiaomomo/traffic-dispatcher-cli.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moxiaomomo/traffic-dispatcher-cli/issues"
+  },
+  "homepage": "https://github.com/moxiaomomo/traffic-dispatcher-cli#readme"
 }
