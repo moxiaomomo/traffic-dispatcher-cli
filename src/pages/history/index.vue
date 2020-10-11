@@ -35,7 +35,6 @@ export default class HistoryPage extends Vue {
   public mounted(): void {
     const content = document.getElementById("hisMainContent") as HTMLElement;
     content.style.height = `${window.innerHeight - 100}px`;
-
     this.initHistory();
   }
 
@@ -53,9 +52,11 @@ export default class HistoryPage extends Vue {
     if (res.data) {
       // console.log(res.data.orders);
       this.hisList = res.data.orders;
-      for (const ele of this.hisList) {
-        if (ele.status == null) {
-          ele.status = 0;
+      if (this.hisList != null) {
+        for (const ele of this.hisList) {
+          if (ele.status == null) {
+            ele.status = 0;
+          }
         }
       }
     }
