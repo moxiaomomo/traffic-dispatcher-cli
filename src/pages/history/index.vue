@@ -21,6 +21,8 @@
 <script lang="ts">
 // @ is an alias to /src
 
+declare const BMap: any;
+
 import { Component, Vue, Prop } from "vue-property-decorator";
 import ApiService from "@/api/api.service";
 
@@ -60,6 +62,13 @@ export default class HistoryPage extends Vue {
         }
       }
     }
+
+    // var convertor = new BMap.Convertor();
+    // var point = new BMap.Point(106.554241, 29.556531);
+    // var geoc = new BMap.Geocoder();
+    // geoc.getLocation(point, (rs: any) => {
+    //   console.log(res);
+    // });
   }
 }
 </script>

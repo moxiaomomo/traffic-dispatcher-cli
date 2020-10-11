@@ -48,6 +48,8 @@ export default class CallCar extends Vue {
   private contentHeight: number = 200;
   private srcPosition: string = "";
   private destPosition: string = "";
+  private srcGeo: any = null;
+  private destGeo: any = null;
   private focusEle = "";
 
   public mounted(): void {
@@ -55,8 +57,10 @@ export default class CallCar extends Vue {
     uni.$on("getloc", (res) => {
       if (this.focusEle == "src") {
         this.srcPosition = res.addr;
+        this.srcGeo = res.geo;
       } else if (this.focusEle == "dest") {
         this.destPosition = res.addr;
+        this.destGeo = res.geo;
       }
     });
   }
@@ -81,10 +85,10 @@ export default class CallCar extends Vue {
       });
       return;
     }
-    // 测试，固定地点
+
     const req = {
-      srcGeo: "[110,27]",
-      destGeo: "[112,30]",
+      srcGeo: `[${this.srcGeo.lng},${this.srcGeo.lat}]`,
+      destGeo: `[${this.destGeo.lng},${this.destGeo.lat}]`,
     };
     uni.$emit("callcar", req);
   }
