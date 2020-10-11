@@ -29,9 +29,10 @@ export default class DriverHome extends Vue {
   private asOpen: boolean = true;
 
   public mounted(): void {
+    const user = uni.getStorageSync("user");
     const role = "" + uni.getStorageSync("userRole");
     WSService.initiate();
-    WSService.connect(this.sidPrefix + new Date().getDate(), role);
+    WSService.connect(this.sidPrefix + new Date().getDate(), user.userID, role);
     WSService.msgSubject.subscribe((data: any) => {
       if (!(data instanceof Array)) {
         console.log("Unknown message:" + data);

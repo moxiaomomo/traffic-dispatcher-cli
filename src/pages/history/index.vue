@@ -30,7 +30,7 @@ import ApiService from "@/api/api.service";
 export default class HistoryPage extends Vue {
   private sidPrefix = "lbsclient_";
   private asOpen: boolean = true;
-  private hisList = [];
+  private hisList: any[] = [];
 
   public mounted(): void {
     const content = document.getElementById("hisMainContent") as HTMLElement;
@@ -51,8 +51,13 @@ export default class HistoryPage extends Vue {
       data
     );
     if (res.data) {
-      console.log(res.data.orders);
+      // console.log(res.data.orders);
       this.hisList = res.data.orders;
+      for (const ele of this.hisList) {
+        if (ele.status == null) {
+          ele.status = 0;
+        }
+      }
     }
   }
 }

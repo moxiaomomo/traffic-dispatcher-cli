@@ -5,6 +5,12 @@
       v-show="showHomePage"
       class="home-container"
     >
+      <uni-notice-bar
+        v-show="processingOrder"
+        single="true"
+        text="您有一条进行中的行程订单哦，点击查看 >>"
+        @click="toCheckProcessingOrder"
+      ></uni-notice-bar>
       <LBSStat
         style="width:100%;height:100%;"
         :locs="locs"
@@ -19,10 +25,7 @@
         :percent="60"
       >
       </cCircle>
-      <!-- <uni-notice-bar
-        single="true"
-        text="[单行] 这是 NoticeBar 通告栏，这是 NoticeBar 通告栏，这是 NoticeBar 通告栏"
-      ></uni-notice-bar> -->
+
     </div>
 
     <div
@@ -65,23 +68,19 @@ export default class Home extends Vue {
   private showHomePage = true;
   private showDriverHomePage = false;
   private waitForAccept = false;
+  private processingOrder = false;
 
   public mounted(): void {
+    const user = uni.getStorageSync("user");
     const role = "" + uni.getStorageSync("userRole");
     WSService.initiate();
-    WSService.connect(this.sidPrefix + new Date().getDate(), role);
+    WSService.connect(this.sidPrefix + new Date().getDate(), user.userID, role);
     WSService.msgSubject.subscribe((data: any) => {
-      if (!(data instanceof Array)) {
-        console.log("Unknown message:" + data);
-        return;
-      }
-      this.locs = [];
-      for (const ele of data) {
-        const geo = ele.geoinfo.coordinates;
-        console.log(geo);
-        if (geo instanceof Array && geo.length == 2) {
-          this.locs.push({ lng: geo[0], lat: geo[1] });
-        }
+      // console.log(data);
+      if (data.topic == "geolist") {
+        this.processGeoResp(data.data);
+      } else if (data.topic == "orderhis") {
+        this.processOrderHisResp(data.data);
       }
     });
     setInterval(() => {
@@ -138,11 +137,13 @@ export default class Home extends Vue {
         duration: 2000,
       });
       this.waitForAccept = true;
+      this.processingOrder = true;
     } else if (res.data && res.data.code == 10007) {
       uni.showToast({
         title: "当前还有一条进行中的订单哦",
         duration: 2000,
       });
+      this.processingOrder = true;
     } else {
       uni.showToast({
         title: "叫车失败，请稍后重试",
@@ -154,6 +155,40 @@ export default class Home extends Vue {
   onCallCarCmpEvt(evt: any) {
     this.asOpen = !this.asOpen;
     // console.log(this.asOpen);
+  }
+
+  processGeoResp(msg: any) {
+    const data = JSON.parse(msg);
+    if (!(data instanceof Array)) {
+      console.log("Unknown message:" + data);
+      return;
+    }
+    this.locs = [];
+    for (const ele of data) {
+      const geo = ele.geoinfo.coordinates;
+      console.log(geo);
+      if (geo instanceof Array && geo.length == 2) {
+        this.locs.push({ lng: geo[0], lat: geo[1] });
+      }
+    }
+  }
+
+  processOrderHisResp(data: any) {
+    if (!(data instanceof Array)) {
+      console.log("Unknown message:" + data);
+      return;
+    }
+    for (const ele of data) {
+      if (ele.status != 3 && ele.status != 4) {
+        this.processingOrder = true;
+      }
+    }
+  }
+
+  toCheckProcessingOrder() {
+    uni.switchTab({
+      url: "/pages/history/index",
+    });
   }
 }
 </script>
