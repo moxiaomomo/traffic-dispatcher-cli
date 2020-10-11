@@ -3,7 +3,7 @@ import axios from 'axios';
 // 创建axios实例
 let ApiService: any = {};
 ApiService = axios.create({
-  baseURL: 'http://localhost:8080/',  // api的base_url
+  baseURL: 'http://ttapi.ibitcoding.com/',  // api的base_url
   timeout: 30000                      // 请求超时时间
 });
 

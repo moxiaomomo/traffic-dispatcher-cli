@@ -13,7 +13,7 @@ export class WSService {
 
   // private static wsURL = "ws://192.168.200.174:8080/ws/AGV/";
   private static wsProtocal = 'lbs'
-  private static wsURL = 'ws://localhost:8082/geo/ws/lbs'
+  private static wsURL = 'ws://ttweb.ibitcoding.com/geo/ws/lbs'
   private static role = '0'
   private static uid = ''
 
