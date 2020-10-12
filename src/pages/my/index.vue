@@ -7,7 +7,7 @@
       :title="userName"
       mode="style"
       :is-shadow="true"
-      thumbnail=http://ttcli.ibitcoding.com/image/my1.jpg"
+      thumbnail="http://ttcli.ibitcoding.com/image/my1.jpg"
       extra="上次登录 Guangzhou 2020-10-10 12:32:19"
     >
       出行里数: 3000公里<br>会员积分: 320
