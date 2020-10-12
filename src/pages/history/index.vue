@@ -10,9 +10,18 @@
         v-for="(item,index) in hisList"
         :key="index"
       >
-        <view class="uni-list-cell-navigate uni-navigate-right">
-          {{item.createAt}}|{{item.srcGeo}}|{{item.destGeo}}|{{item.status}}
-        </view>
+        <uni-card
+          :title="index + item.status"
+          note="true"
+        >
+          开始日期：{{item.createAt}}
+          <template v-slot:footer>
+            <view class="footer-box">
+              <view>上车位置：{{item.srcGeo}}</view>
+              <view>终点位置：{{item.destGeo}}</view>
+            </view>
+          </template>
+        </uni-card>
       </view>
     </view>
   </div>
@@ -33,6 +42,13 @@ export default class HistoryPage extends Vue {
   private sidPrefix = "lbsclient_";
   private asOpen: boolean = true;
   private hisList: any[] = [];
+  private statusStr = new Map([
+    ["0", "等待接单中"],
+    ["1", "司机已接单，等待上车"],
+    ["2", "行程进行中"],
+    ["3", "订单已取消"],
+    ["4", "订单已结束"],
+  ]);
 
   public mounted(): void {
     const content = document.getElementById("hisMainContent") as HTMLElement;
@@ -57,8 +73,11 @@ export default class HistoryPage extends Vue {
       if (this.hisList != null) {
         for (const ele of this.hisList) {
           if (ele.status == null) {
-            ele.status = 0;
+            ele.status = "0";
+          } else {
+            ele.status = "" + ele.status;
           }
+          ele.status = this.statusStr.get(ele.status);
         }
       }
     }
