@@ -93,12 +93,15 @@ export default class Home extends Vue {
         this.processOrderReq(data.data);
       }
     });
+
+    const roleVal = parseInt(role);
+    const qRoleVal = 1 - roleVal;
     setInterval(() => {
       WSService.sendMessage(
         JSON.stringify({
           cmd: 3,
-          role: 0,
-          qrole: 1,
+          role: roleVal,
+          qrole: qRoleVal,
           geo: { lng: 116.404, lat: 39.915 },
           qgeo: { lng: 116.404, lat: 39.915 },
         })
