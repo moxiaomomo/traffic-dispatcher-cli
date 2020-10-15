@@ -32,6 +32,12 @@
       v-show="showDriverHomePage"
       class="home-container"
     >
+      <uni-notice-bar
+        v-show="processingOrder"
+        single="true"
+        :text="noticeText"
+        @click="toCheckProcessingOrder"
+      ></uni-notice-bar>
       <div style="width:100%;height:100%;">
         <p style="width:100%;text-align:center;color:rgb(225,225,225);">等待订单中</p>
       </div>
