@@ -8,7 +8,7 @@
       <uni-notice-bar
         v-show="processingOrder"
         single="true"
-        text="您有一条进行中的行程订单哦，点击查看 >>"
+        :text="noticeText"
         @click="toCheckProcessingOrder"
       ></uni-notice-bar>
       <LBSStat
@@ -69,6 +69,7 @@ export default class Home extends Vue {
   private showDriverHomePage = false;
   private waitForAccept = false;
   private processingOrder = false;
+  private noticeText = "您有一条进行中的行程订单哦，点击查看 >>";
 
   public mounted(): void {
     const user = uni.getStorageSync("user");
@@ -81,6 +82,9 @@ export default class Home extends Vue {
         this.processGeoResp(data.data);
       } else if (data.topic == "orderhis") {
         this.processOrderHisResp(data.data);
+      } else if (data.topic == "orderreq") {
+        console.log(data);
+        this.processOrderReq(data.data);
       }
     });
     setInterval(() => {
@@ -183,6 +187,10 @@ export default class Home extends Vue {
         this.processingOrder = true;
       }
     }
+  }
+
+  processOrderReq(data: any) {
+    this.noticeText = "有一条新订单到达， 快点击查看";
   }
 
   toCheckProcessingOrder() {
