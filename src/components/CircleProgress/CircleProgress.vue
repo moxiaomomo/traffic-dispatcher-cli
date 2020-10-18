@@ -1,223 +1,227 @@
 <template>
-  <view>
-    <view :style="cBox">
-      <text v-if="!slot">{{animationPercent}}%</text>
-      <view
-        :style="slotStyle"
-        v-if="slot"
-      >
-        <slot name="content"></slot>
-      </view>
-      <view :style="faStyle">
-        <view :style="leftBox">
-          <view :style="leftStyle"></view>
-        </view>
-        <view :style="rithStyle"></view>
-      </view>
+  <view
+    :style="{
+			width: circleSize.width,
+			height: circleSize.height
+		}"
+    class="circle_box"
+  >
+    <view class="canvas">
+      <slot name="canvas"></slot>
+    </view>
+    <view class="slot">
+      <slot></slot>
     </view>
   </view>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      animationPercent: 0
-    };
-  },
-  mounted () {
-    if (this.animation) {
-      this.loadAnimation();
-    }
-    else {
-      this.animationPercent = this.percent;
-    }
-  },
-  methods: {
-    //动画加载方法
-    loadAnimation () {
-      this.animationPercent = 0;
-      var that = this;
-      var i = setInterval(() => {
-        if (that.animationPercent >= that.percent) {
-          clearInterval(i);
-          that.$emit('onComplete');
-        }
-        else {
-          that.animationPercent += 1;
-          that.$emit('animationPercent', that.animationPercent);
-        }
-
-      }, that.animationSpeed);
-    },
-
-  },
+  name: "iCircle",
   props: {
-    //大小
-    size: {
-      type: Number,
-      default: 60
-    },
-    //进度条颜色
-    circleColor: {
-      type: String,
-      default: '#32CDA5'
-    },
-    //圆环背景色
-    defaultColor: {
-      type: String,
-      default: '#e9e9e9'
-    },
-    //圆环宽度
-    circleWidth: {
-      type: Number,
-      default: 5
-    },
-    //百分比
     percent: {
+      // 百分比
       type: Number,
       default: 0
     },
-    //动画效果
-    animation: {
+    prefix: {
+      // 多个圆环情况下的前缀
+      type: String,
+      default: ""
+    },
+    size: {
+      // 图表的宽度和高度，单位 upx
+      type: Number,
+      default: 120
+    },
+    strokeWidth: {
+      // 进度环的线宽，单位 upx
+      type: Number,
+      default: 10
+    },
+    strokeColor: {
+      // 进度环的颜色 16进制
+      type: String,
+      default: "#2d8cf0"
+    },
+    trailWidth: {
+      // 进度环背景的线宽，单位 upx
+      type: Number,
+      default: 12
+    },
+    trailColor: {
+      // 进度环背景的颜色
+      type: String,
+      default: "#eaeef2"
+    },
+    BgId: {
+      // BgId
+      type: String,
+      required: true
+    },
+    InId: {
+      // InId
+      type: String,
+      required: true
+    },
+    dashboard: {
+      // 仪表盘
       type: Boolean,
       default: false
     },
-    //帧动画间隔
-    animationSpeed: {
+    start: {
+      // 仪表盘起始角度
       type: Number,
-      default: 1
-    },
-    //动画方向
-    clockwise: {
-      type: Boolean,
-      default: true
-    },
-    //自定义七点位置
-    direction: {
-      type: Number,
-      default: 0
+      default: 27
+    }
+  },
+  data () {
+    return {
+      selfPercent: 0,
+      type: "add",
+      T: null
     }
   },
   computed: {
-    sizeAdapter () {
-      return this.size % 2 == 0 ? this.size : (this.size - 1);
+    UniSize () {
+      // 转换为upx
+      return uni.upx2px(this.size);
     },
-    slot () {
-
-      if (this.$slots.content) {
-        return true;
+    circleSize () {
+      return {
+        width: `${this.UniSize}px`,
+        height: `${this.UniSize}px`
+      };
+    },
+    center_x () {
+      return this.UniSize / 2;
+    },
+    center_y () {
+      return this.UniSize / 2;
+    },
+    rad () {
+      return Math.PI * 2 / 100;
+    },
+    lineWidth () {
+      return uni.upx2px(this.trailWidth);
+    },
+    BgWidth () {
+      return uni.upx2px(this.strokeWidth);
+    },
+    radius () {
+      return this.center_x - this.BgWidth - Math.abs(this.BgWidth - this.lineWidth);
+    },
+    startDeg () {
+      return Math.PI * (1 - this.start / 180);
+    },
+    countDeg () {
+      return this.start * 2 + 180;
+    },
+    fillDegArr () {
+      let start, end;
+      if (this.dashboard) {
+        start = this.startDeg;
+        end = Math.PI * this.selfPercent / 100 * this.countDeg / 180 + this.startDeg;
+      } else {
+        start = -Math.PI / 2;
+        end = -Math.PI / 2 + this.selfPercent * this.rad;
       }
-      return false;
+      return { start, end };
     },
-    cBox () {
-
-      var size = this.sizeAdapter;
-      var circleWidth = this.circleWidth;
-      var style =
-        `	
-						position:relative !important;
-						height:${circleWidth * 2 + size}px !important;
-						width:${circleWidth * 2 + size}px !important;
-						display:flex !important;
-						justify-content: center !important;
-						align-items: center !important;
-					`;
-      return style;
+    bgDegArr () {
+      let start, end;
+      if (this.dashboard) {
+        start = this.startDeg;
+        end = Math.PI * this.countDeg / 180 + this.startDeg;
+      } else {
+        start = 0;
+        end = Math.PI * 2;
+      }
+      return { start, end };
+    }
+  },
+  methods: {
+    Init () {
+      this.backgroundCircle();
+      this.requestAnimationFrame();
     },
-    slotStyle () {
-      var size = this.sizeAdapter;
-      var circleWidth = this.circleWidth;
-      var style =
-        `
-						border-radius:50% !important;
-						height:${size}px !important;
-						width:${size}px !important;
-						display:flex !important;
-						justify-content: center !important;
-						align-items: center !important;
-					`;
-      return style;
+    requestAnimationFrame () {
+      if (this.type == "add") {
+        if (this.selfPercent >= this.percent) {
+          // clearTimeout(this.T);
+          this.selfPercent = 0;
+          // return;
+        }
+        this.selfPercent += 0.1;
+        // if (this.selfPercent >= 100) {
+        //   this.selfPercent = 100;
+        // }
+      } else {
+        if (this.selfPercent <= this.percent) {
+          clearTimeout(this.T);
+          return;
+        }
+        this.selfPercent--;
+        if (this.selfPercent <= 0) {
+          this.selfPercent = 0;
+        }
+      }
+      this.foregroundCircle();
+      this.T = setTimeout(this.requestAnimationFrame, 5);
     },
-    faStyle () {
-      var size = this.sizeAdapter;
-      var circleWidth = this.circleWidth;
-      var defaultColor = this.defaultColor;
-      var direction = this.direction;
-      var clockwise = this.clockwise;
-      var style = `
-							 position:absolute !important;
-							 border-radius:50% !important;
-							 display:flex !important;
-							 justify-content: center !important;
-							 align-items: center !important;
-							 top:0 !important;
-							 left:0 !important;
-							 height:${size}px !important;
-							 width:${size}px !important;
-							 border:${circleWidth}px ${defaultColor} solid !important;
-							 transform:rotate(${direction}deg) rotateY(${clockwise ? 0 : 180}deg) !important;
-							`;
-      return style;
+    backgroundCircle () {
+      const context = uni.createCanvasContext(this.BgId);
+      // 绘制背景圆环
+      const rad = Math.PI * 2 / 100;
+      context.save();
+      // 开始路径绘制
+      context.beginPath();
+      context.setLineWidth(this.lineWidth); //设置线宽
+      context.setLineCap("round");
+      context.setStrokeStyle(this.trailColor);
+      //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+      // context.arc(this.center_x, this.center_y, this.radius, 0, Math.PI * 2, false);
+      context.arc(this.center_x, this.center_y, this.radius, this.bgDegArr.start, this.bgDegArr.end, false);
+      context.stroke();
+      // 结束绘制路径
+      context.closePath();
+      // 恢复之前保存的绘图上下文。
+      context.restore();
+      // 绘制
+      context.draw()
     },
-    leftBox () {
-      var size = this.sizeAdapter;
-      var circleWidth = this.circleWidth;
-      var style = `
-					height:${circleWidth * 2 + size}px !important;
-					width:${circleWidth * 2 + size}px !important;
-					position:absolute !important;
-					top:-${circleWidth}px !important;
-					left:-${circleWidth}px !important;
-					opacity:1 !important;
-					clip:rect(0 ${(circleWidth * 2 + size) / 2}px ${(circleWidth * 2 + size)}px 0) !important;
-				`;
-      return style;
-    },
-    leftStyle () {
-      var top = this.top;
-      var clockwise = this.clockwise;
-      var size = this.sizeAdapter;
-      var circleColor = this.circleColor;
-      var circleWidth = this.circleWidth;
-      var percent = this.animation ? this.animationPercent : this.percent;
-      var style;
-      style = `
-					height:${size}px !important;
-					width:${size}px !important;
-					border:${circleWidth}px ${circleColor} solid !important;
-					border-radius:50% !important; 
-					z-index:0 !important;
-					position:absolute !important;
-					top:0px !important;
-					left:0px !important;
-					transform:rotate(${percent > 50 ? 180 : (percent / 100 * 360)}deg) !important;
-					clip:rect(0 ${circleWidth * 2 + size}px ${circleWidth * 2 + size}px ${(circleWidth * 2 + size) / 2}px ) !important;
-					`;
-      return style;
-    },
-    rithStyle () {
-      var direction = this.direction;
-      var size = this.sizeAdapter;
-      var circleColor = this.circleColor;
-      var defaultColor = this.defaultColor;
-      var circleWidth = this.circleWidth;
-      var percent = this.animation ? this.animationPercent : this.percent;
-      var style = `
-							 height:${size}px !important;
-							 width:${size}px !important;
-							 position:absolute;
-							 border:${circleWidth}px ${percent > 50 ? circleColor : defaultColor} solid !important;
-							 border-radius:50% !important;
-							 z-index:${percent > 50 ? 0 : 100} !important;
-							 position:absolute !important;
-							 top:-${circleWidth}px;
-							 left:-${circleWidth}px;
-							 transform:rotate(${percent > 50 ? percent / 100 * 360 : 0}deg) !important;
-							 clip:rect(0 ${circleWidth * 2 + size}px ${circleWidth * 2 + size}px ${(circleWidth * 2 + size) / 2}px ) !important; 
-							`;
-      return style;
+    foregroundCircle () {
+      const context = uni.createCanvasContext(this.InId);
+      context.save();
+      context.setStrokeStyle(this.strokeColor);
+      context.setLineWidth(this.BgWidth); //设置线宽
+      context.setLineCap("round");
+      context.beginPath();
+      context.arc(this.center_x, this.center_y, this.radius, this.fillDegArr.start, this.fillDegArr.end, false);
+      context.stroke();
+      context.closePath();
+      context.restore();
+      context.draw();
+    }
+  },
+  mounted () {
+    this.Init();
+  },
+  onReady () {
+  },
+  watch: {
+    percent (newV, oldV) {
+      if (newV > oldV) {
+        this.type = "add";
+      } else {
+        this.type = "reduce";
+      }
+      this.Init();
     }
   }
-}
+};
 </script>
+
+<style>
+@import url("./CircleProgress.scss");
+</style>
