@@ -29,8 +29,9 @@
     </div>
 
     <div
+      id="driverCanvas"
       v-show="showDriverHomePage"
-      class="home-container"
+      class="driver-container"
     >
       <uni-notice-bar
         v-show="processingOrder"
@@ -39,25 +40,16 @@
         @click="toCheckProcessingOrder"
       ></uni-notice-bar>
 
-      <div style='width:100%;text-align:center;'>
+      <div style='width:100%;height:80%;padding:40% 0;'>
         <iCircle
           :percent="percent"
           :size="300"
           :stroke-color="color()"
           BgId="BgId1"
           InId="InId1"
+          style="margin:auto;"
         >
-          <!-- <icon
-            v-if="percent == 100"
-            type="success"
-            size="60"
-            color="#5cb85c"
-          />
-          <text
-            v-else
-            style="font-size:14px; color: #FFFFFF;"
-          >等待sec:{{ percent }}</text> -->
-          <text style="font-size:14px; color: #FFFFFF;">等待中。。。</text>
+          <text style="font-size:14px; color: #FFFFFF;">接单中</text>
           <view slot="canvas">
             <canvas
               class="CanvasBox strokeCanvas"
@@ -71,10 +63,10 @@
         </iCircle>
       </div>
 
-      <div style="width:100%;height:100%;">
+      <!-- <div style="width:100%;height:100%;">
         <p style="width:100%;text-align:center;color:rgb(225,225,225);">等待订单中</p>
-      </div>
-      <ReceiveOrder style="width:100%;" />
+      </div> -->
+      <!-- <ReceiveOrder style="width:100%;" /> -->
     </div>
 
   </div>
@@ -113,6 +105,9 @@ export default class Home extends Vue {
   private percent: number = 100;
 
   public mounted(): void {
+    const canvas = document.getElementById("driverCanvas") as HTMLElement;
+    canvas.style.height = `${window.innerHeight - 135}px`;
+
     const user = uni.getStorageSync("user");
     const role = "" + uni.getStorageSync("userRole");
     WSService.initiate();
@@ -259,6 +254,10 @@ export default class Home extends Vue {
   height: 100%;
   background: linear-gradient(rgba(68, 115, 184, 0.8), rgb(56, 107, 184));
   position: relative;
+}
+
+.driver-container {
+  background: linear-gradient(rgba(68, 115, 184, 0.8), rgb(56, 107, 184));
 }
 
 .CanvasBox {
