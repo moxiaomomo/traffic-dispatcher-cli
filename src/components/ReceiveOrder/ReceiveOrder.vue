@@ -25,13 +25,13 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 // issue-sass: https://www.jianshu.com/p/c4610144c2f7
-import "@/components/CallCar/CallCar.scss";
+import "@/components/ReceiveOrder/ReceiveOrder.scss";
 
 @Component
 export default class ReceiveOrder extends Vue {
   @Prop() open!: boolean;
-  private minHeight: number = 10;
-  private contentHeight: number = 200;
+  private minHeight: number = 0;
+  private contentHeight: number = 250;
   private srcPosition: string = "";
   private destPosition: string = "";
 

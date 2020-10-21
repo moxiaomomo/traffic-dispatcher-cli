@@ -66,7 +66,7 @@
       <!-- <div style="width:100%;height:100%;">
         <p style="width:100%;text-align:center;color:rgb(225,225,225);">等待订单中</p>
       </div> -->
-      <!-- <ReceiveOrder style="width:100%;" /> -->
+      <ReceiveOrder :open="toggleTest" />
     </div>
 
   </div>
@@ -103,6 +103,7 @@ export default class Home extends Vue {
   private noticeText = "您有一条进行中的行程订单哦，点击查看 >>";
 
   private percent: number = 100;
+  private toggleTest = false;
 
   public mounted(): void {
     const canvas = document.getElementById("driverCanvas") as HTMLElement;
@@ -127,6 +128,8 @@ export default class Home extends Vue {
     const roleVal = parseInt(role);
     const qRoleVal = 1 - roleVal;
     setInterval(() => {
+      this.toggleTest = !this.toggleTest;
+
       WSService.sendMessage(
         JSON.stringify({
           cmd: 3,
