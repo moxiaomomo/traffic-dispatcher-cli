@@ -9,13 +9,15 @@
           <span class="cart">您有新的待接订单哦</span>
         </div>
         <div class="_content">
-          <p>起点：{{ srcPosition }}</p>
           <br>
+          <p>起点：{{ srcPosition }}</p>
+          <br><br>
           <p>终点：{{ destPosition }}</p>
+          <br><br>
           <button
             class="item callBtn"
             @click="onReceiveOrder"
-          >接单</button>
+          >接 单</button>
         </div>
       </div>
     </div>
@@ -31,7 +33,7 @@ import "@/components/ReceiveOrder/ReceiveOrder.scss";
 export default class ReceiveOrder extends Vue {
   @Prop() open!: boolean;
   private minHeight: number = 0;
-  private contentHeight: number = 250;
+  private contentHeight: number = 200;
   private srcPosition: string = "";
   private destPosition: string = "";
 
