@@ -45,11 +45,12 @@
           :percent="percent"
           :size="300"
           :stroke-color="color()"
+          :finished="orderArrived"
           BgId="BgId1"
           InId="InId1"
           style="margin:auto;"
         >
-          <text style="font-size:14px; color: #FFFFFF;">接单中</text>
+          <text style="font-size:14px; color: #FFFFFF;">{{ waitText }}</text>
           <view slot="canvas">
             <canvas
               class="CanvasBox strokeCanvas"
@@ -67,7 +68,7 @@
         <p style="width:100%;text-align:center;color:rgb(225,225,225);">等待订单中</p>
       </div> -->
       <ReceiveOrder
-        :open="toggleTest"
+        :open="orderArrived"
         :srcPosition="srcPosition"
         :destPosition="destPosition"
       />
@@ -106,9 +107,10 @@ export default class Home extends Vue {
   private waitForAccept = false;
   private processingOrder = false;
   private noticeText = "您有一条进行中的行程订单哦，点击查看 >>";
+  private waitText = "接单中";
 
   private percent: number = 100;
-  private toggleTest = false;
+  private orderArrived = false;
   private srcPosition: string = "";
   private destPosition: string = "";
 
@@ -166,25 +168,25 @@ export default class Home extends Vue {
       });
     }
 
-    uni.getLocation({
-      type: "wgs84",
-      success: function (res) {
-        console.log("当前位置的经度：" + res.longitude);
-        console.log("当前位置的纬度：" + res.latitude);
-        var point = new (plus.maps as any).Point(res.longitude, res.latitude);
-        (plus.maps as any).Map.reverseGeocode(
-          point,
-          {},
-          function (event: any) {
-            var address = event.address; // 转换后的地理位置
-            console.log(address);
-          },
-          function (e: any) {
-            console.log(e);
-          }
-        );
-      },
-    });
+    // uni.getLocation({
+    //   type: "wgs84",
+    //   success: function (res) {
+    //     console.log("当前位置的经度：" + res.longitude);
+    //     console.log("当前位置的纬度：" + res.latitude);
+    //     var point = new (plus.maps as any).Point(res.longitude, res.latitude);
+    //     (plus.maps as any).Map.reverseGeocode(
+    //       point,
+    //       {},
+    //       function (event: any) {
+    //         var address = event.address; // 转换后的地理位置
+    //         console.log(address);
+    //       },
+    //       function (e: any) {
+    //         console.log(e);
+    //       }
+    //     );
+    //   },
+    // });
   }
 
   onUnload() {
@@ -267,8 +269,9 @@ export default class Home extends Vue {
   }
 
   processOrderReq(data: any) {
-    this.toggleTest = true;
+    this.orderArrived = true;
     this.noticeText = "有一条新订单到达， 快点击查看";
+    this.waitText = "新订单到达";
     if (typeof data == "string") {
       data = JSON.parse(data);
     }
@@ -278,7 +281,7 @@ export default class Home extends Vue {
 
   toCheckProcessingOrder() {
     uni.switchTab({
-      url: "/pages/history/index",
+      url: "/pages/historwaitTexty/index",
     });
   }
 

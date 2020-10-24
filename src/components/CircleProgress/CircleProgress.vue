@@ -73,6 +73,11 @@ export default {
       // 仪表盘起始角度
       type: Number,
       default: 27
+    },
+    finished: {
+      // 仪表盘起始角度
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -147,6 +152,10 @@ export default {
     },
     requestAnimationFrame () {
       if (this.type == "add") {
+        if (this.finished) {
+          this.selfPercent = this.percent;
+          return;
+        }
         if (this.selfPercent >= this.percent) {
           // clearTimeout(this.T);
           this.selfPercent = 0;
