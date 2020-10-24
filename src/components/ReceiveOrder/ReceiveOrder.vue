@@ -32,14 +32,16 @@ import "@/components/ReceiveOrder/ReceiveOrder.scss";
 @Component
 export default class ReceiveOrder extends Vue {
   @Prop() open!: boolean;
+  @Prop() private srcPosition: string = "";
+  @Prop() private destPosition: string = "";
   private minHeight: number = 0;
   private contentHeight: number = 200;
-  private srcPosition: string = "";
-  private destPosition: string = "";
 
   @Watch("open")
   public onOpenChanged() {
-    console.log("onOpenChanged");
+    // console.log("onOpenChanged");
+    if (this.open) {
+    }
   }
 
   onCancel() {

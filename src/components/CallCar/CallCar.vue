@@ -89,6 +89,8 @@ export default class CallCar extends Vue {
     const req = {
       srcGeo: `[${this.srcGeo.lng},${this.srcGeo.lat}]`,
       destGeo: `[${this.destGeo.lng},${this.destGeo.lat}]`,
+      srcAddr: this.srcPosition,
+      destAddr: this.destPosition,
     };
     uni.$emit("callcar", req);
   }

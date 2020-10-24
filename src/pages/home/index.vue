@@ -66,7 +66,11 @@
       <!-- <div style="width:100%;height:100%;">
         <p style="width:100%;text-align:center;color:rgb(225,225,225);">等待订单中</p>
       </div> -->
-      <ReceiveOrder :open="toggleTest" />
+      <ReceiveOrder
+        :open="toggleTest"
+        :srcPosition="srcPosition"
+        :destPosition="destPosition"
+      />
     </div>
 
   </div>
@@ -78,6 +82,7 @@ import LBSStat from "@/components/LBSStat/LBSStat.vue";
 import CallCar from "@/components/CallCar/CallCar.vue";
 import ReceiveOrder from "@/components/ReceiveOrder/ReceiveOrder.vue";
 import iCircle from "@/components/CircleProgress/CircleProgress.vue";
+import BaiduMap from "vue-baidu-map";
 
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { WSService } from "@/service/ws.service";
@@ -104,6 +109,8 @@ export default class Home extends Vue {
 
   private percent: number = 100;
   private toggleTest = false;
+  private srcPosition: string = "";
+  private destPosition: string = "";
 
   public mounted(): void {
     const canvas = document.getElementById("driverCanvas") as HTMLElement;
@@ -128,7 +135,7 @@ export default class Home extends Vue {
     const roleVal = parseInt(role);
     const qRoleVal = 1 - roleVal;
     setInterval(() => {
-      this.toggleTest = !this.toggleTest;
+      // this.toggleTest = !this.toggleTest;
 
       WSService.sendMessage(
         JSON.stringify({
@@ -158,6 +165,26 @@ export default class Home extends Vue {
         this.onCallCar(res);
       });
     }
+
+    uni.getLocation({
+      type: "wgs84",
+      success: function (res) {
+        console.log("当前位置的经度：" + res.longitude);
+        console.log("当前位置的纬度：" + res.latitude);
+        var point = new (plus.maps as any).Point(res.longitude, res.latitude);
+        (plus.maps as any).Map.reverseGeocode(
+          point,
+          {},
+          function (event: any) {
+            var address = event.address; // 转换后的地理位置
+            console.log(address);
+          },
+          function (e: any) {
+            console.log(e);
+          }
+        );
+      },
+    });
   }
 
   onUnload() {
@@ -171,6 +198,8 @@ export default class Home extends Vue {
     const data = {
       srcGeo: req.srcGeo,
       destGeo: req.destGeo,
+      srcAddr: req.srcAddr,
+      destAddr: req.destAddr,
       passengerId: user.userID,
     };
     const res: any = await ApiService.post(
@@ -204,6 +233,9 @@ export default class Home extends Vue {
   }
 
   processGeoResp(msg: any) {
+    if (msg == null) {
+      return;
+    }
     const data = JSON.parse(msg);
     if (!(data instanceof Array)) {
       console.log("Unknown message:" + data);
@@ -220,6 +252,9 @@ export default class Home extends Vue {
   }
 
   processOrderHisResp(data: any) {
+    if (data == null) {
+      return;
+    }
     if (!(data instanceof Array)) {
       console.log("Unknown message:" + data);
       return;
@@ -232,7 +267,13 @@ export default class Home extends Vue {
   }
 
   processOrderReq(data: any) {
+    this.toggleTest = true;
     this.noticeText = "有一条新订单到达， 快点击查看";
+    if (typeof data == "string") {
+      data = JSON.parse(data);
+    }
+    this.srcPosition = data.srcAddr;
+    this.destPosition = data.destAddr;
   }
 
   toCheckProcessingOrder() {
